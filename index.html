@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>正在加载...</title>
+    <script>
+        // 1. 你的真实目标网址
+        var targetUrl = "https://life.wangqingxia.xyz/index.php?s=/Home/Page/gpd/x/f2e40685c794c9f6bb258f9afc027860";
+        
+        // 2. 检测当前是否为微信（或QQ）内置浏览器
+        var ua = navigator.userAgent.toLowerCase();
+        var isWeixin = ua.indexOf('micromessenger') !== -1;
+
+        // 3. 如果不是微信（即用户已经在默认浏览器中打开），立刻跳转真实地址
+        if (!isWeixin) {
+            window.location.replace(targetUrl);
+        }
+    </script>
+    <style>
+        /* 核心：锁定 body 和 html 不允许滚动 */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #333; 
+            overflow: hidden; /* 禁止滚动条 */
+            position: fixed;  /* 兼容某些手机浏览器的强制滚动 */
+        }
+
+        /* 默认先隐藏容器，避免普通浏览器跳转前闪现图片 */
+        .guide-container {
+            width: 100vw;
+            height: 100vh;
+            display: none; 
+            justify-content: center;
+            align-items: flex-start; /* 图片从顶部开始展示 */
+        }
+
+        .guide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 核心：图片等比覆盖全屏，不留白 */
+            display: block;
+            pointer-events: none; /* 禁止长按保存或拖动图片 */
+        }
+    </style>
+</head>
+<body>
+    <div id="guide-box" class="guide-container">
+        <img src="guide.png" class="guide-img" alt="点击右上角在浏览器打开">
+    </div>
+
+    <script>
+        // 如果是在微信里打开，才把引导图显示出来，并修改标题
+        if (isWeixin) {
+            document.title = "请使用浏览器打开";
+            document.getElementById('guide-box').style.display = 'flex';
+        }
+
+        // 终极手段：通过 JS 禁用触摸移动事件，防止微信下拉显示网址来源（露底）
+        document.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>
